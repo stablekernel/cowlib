@@ -263,7 +263,7 @@ parse_header(<< Fin:1, Rsv:3/bits, Opcode:4, 1:1, Len:7, MaskKey:32, Rest/bits >
 	parse_header(Opcode, Fin, FragState, Rsv, Len, MaskKey, Rest);
 %% 16 bits payload length.
 parse_header(<< Fin:1, Rsv:3/bits, Opcode:4, 0:1, 126:7, Len:16, Rest/bits >>, _, FragState) when Len > 125, Opcode < 8 ->
-	parse_header(Opcode, Fin, FragState, Rsv, Len, undefined, Rest);
+	parse_header(Opcode, Fin, FragState, Rsv, Len, 0, Rest);
 parse_header(<< Fin:1, Rsv:3/bits, Opcode:4, 1:1, 126:7, Len:16, MaskKey:32, Rest/bits >>, _, FragState) when Len > 125, Opcode < 8 ->
 	parse_header(Opcode, Fin, FragState, Rsv, Len, MaskKey, Rest);
 %% 63 bits payload length.
